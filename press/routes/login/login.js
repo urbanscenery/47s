@@ -37,7 +37,7 @@ router.post('/', function(req, res) {
 					category : [0,0,0,0]
 				};
 				let monthTimeJSON = {
-					monthTime : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+					monthTime : [0,0,0,0,0,0,0]
 				};
 				let category = JSON.stringify(categoryJSON);
 				let monthTime = JSON.stringify(monthTimeJSON);
