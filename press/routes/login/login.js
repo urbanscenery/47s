@@ -32,7 +32,7 @@ router.post('/', function(req, res) {
         function(userdata, connection, callback) {
             let email = req.body.email;
             if (userdata.length === 0) {
-                let insertUserQuery = 'insert into users values(?,?,?,?,?,?)';
+                let insertUserQuery = 'insert into users values(?,?,?,?,?,?,?)';
 				let categoryJSON = {
 					category : [0,0,0,0]
 				};
@@ -42,7 +42,7 @@ router.post('/', function(req, res) {
 				let category = JSON.stringify(categoryJSON);
 				let monthTime = JSON.stringify(monthTimeJSON);
 
-                connection.query(insertUserQuery, [email, req.body.nickname, req.body.uid, category, monthTime, 0], function(err) {
+                connection.query(insertUserQuery, [email, req.body.nickname, req.body.uid, category, monthTime, 0, 0], function(err) {
                     if (err) {
                         res.status(501).send({
                             msg: "insert user data error"

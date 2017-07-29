@@ -15,7 +15,7 @@ router.get('/', function(req, res) {
         })
         .catch(err => {
             res.status(501).send({
-                msg : "get Connection err : " + err
+                msg : "get Connection err"
             });
             console.log(moment().format('MM/DDahh:mm:ss//') + "get Connection error : "+err);
         })
@@ -33,7 +33,7 @@ router.get('/', function(req, res) {
         })
         .catch(([err, connection]) => {
             res.status(501).send({
-                msg : "user authorization err" + err
+                msg : "user authorization err"
             });
             console.log(moment().format('MM/DDahh:mm:ss//') + "user authorization error : "+err);
         })
@@ -42,7 +42,7 @@ router.get('/', function(req, res) {
             connection.query(query, user_email, (err, data) => {
                 if (err){
                     res.status(501).send({
-                        msg : 'select query error : ' + err
+                        msg : 'select query error'
                     });
                     console.log(moment().format('MM/DDahh:mm:ss//') + "select query error : "+err);
                 }

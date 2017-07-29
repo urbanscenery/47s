@@ -59,11 +59,11 @@ router.get('/politics', function(req, res){
         let twoago = moment(today).subtract(2, 'days').format('YYYYMMDD');
         let oneday = [];
         let twoday = [];
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].news_date == oneago) {
-                oneday.push(data[i]);
-            } else if (data[i].news_date == twoago) {
-                twoday.push(data[i]);
+        for (let i = 0; i < newsData.length; i++) {
+            if (newsData[i].news_date == oneago) {
+                oneday.push(newsData[i]);
+            } else if (newsData[i].news_date == twoago) {
+                twoday.push(newsData[i]);
             }
         }
         res.status(200).send({
@@ -143,11 +143,11 @@ router.get('/economies', function(req, res){
         let twoago = moment(today).subtract(2, 'days').format('YYYYMMDD');
         let oneday = [];
         let twoday = [];
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].news_date == oneago) {
-                oneday.push(data[i]);
-            } else if (data[i].news_date == twoago) {
-                twoday.push(data[i]);
+        for (let i = 0; i < newsData.length; i++) {
+            if (newsData[i].news_date == oneago) {
+                oneday.push(newsData[i]);
+            } else if (newsData[i].news_date == twoago) {
+                twoday.push(newsData[i]);
             }
         }
         res.status(200).send({
@@ -226,11 +226,11 @@ router.get('/societies', function(req, res){
         let twoago = moment(today).subtract(2, 'days').format('YYYYMMDD');
         let oneday = [];
         let twoday = [];
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].news_date == oneago) {
-                oneday.push(data[i]);
-            } else if (data[i].news_date == twoago) {
-                twoday.push(data[i]);
+        for (let i = 0; i < newsData.length; i++) {
+            if (newsData[i].news_date == oneago) {
+                oneday.push(newsData[i]);
+            } else if (newsData[i].news_date == twoago) {
+                twoday.push(newsData[i]);
             }
         }
         res.status(200).send({
@@ -309,11 +309,11 @@ router.get('/sciences', function(req, res){
         let twoago = moment(today).subtract(2, 'days').format('YYYYMMDD');
         let oneday = [];
         let twoday = [];
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].news_date == oneago) {
-                oneday.push(data[i]);
-            } else if (data[i].news_date == twoago) {
-                twoday.push(data[i]);
+        for (let i = 0; i < newsData.length; i++) {
+            if (newsData[i].news_date == oneago) {
+                oneday.push(newsData[i]);
+            } else if (newsData[i].news_date == twoago) {
+                twoday.push(newsData[i]);
             }
         }
         res.status(200).send({

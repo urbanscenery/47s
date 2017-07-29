@@ -14,14 +14,14 @@ router.get('/:news_id', function(req, res){
         });
     })
     .catch(err => {
-        res.status(501).send({ msg: "get Connection err : " + err});
+        res.status(501).send({ msg: "get Connection err"});
         console.log(moment().format('MM/DDahh:mm:ss//') + "get connection err" + err);
     })
     .then(connection => {
         let query = 'select news_url from news where news_id = ?';
         connection.query(query, req.params.news_id, (err,data)=>{
             if(err){
-                res.status(501).send({msg: "select query err : " + err});
+                res.status(501).send({msg: "select query err"});
                 console.log(moment().format('MM/DDahh:mm:ss//') + "select news_url query err" + err);
             }
             else{
