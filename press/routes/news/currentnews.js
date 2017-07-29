@@ -1,10 +1,8 @@
 //52.78.124.103:3412/login
 const express = require('express');
-const aws = require('aws-sdk');
 const async = require('async');
 const router = express.Router();
 const moment = require('moment');
-aws.config.loadFromPath('./config/aws_config.json');
 const pool = require('../../config/db_pool');
 const jwt = require('jsonwebtoken');
 
@@ -32,7 +30,7 @@ router.get('/politics', function(req, res){
             }
             connection.release();
         });
-    })
+    });
 });
 
 router.get('/economies', function(req, res){
@@ -58,7 +56,7 @@ router.get('/economies', function(req, res){
             }
             connection.release();
         });
-    })
+    });
 });
 
 router.get('/societies', function(req, res){
@@ -84,7 +82,7 @@ router.get('/societies', function(req, res){
             }
             connection.release();
         });
-    })
+    });
 });
 
 router.get('/sciences', function(req, res){
@@ -110,7 +108,7 @@ router.get('/sciences', function(req, res){
             }
             connection.release();
         });
-    })
+    });
 });
 
 
@@ -132,8 +130,8 @@ router.get('/link/:news_id', function(req, res){
                 res.status(200).send({ result: data[0].news_url , message: "success"});
             }
             connection.release();
-        })
-    })
+        });
+    });
 });
 
 module.exports = router;
