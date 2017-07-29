@@ -8,130 +8,257 @@ const jwt = require('jsonwebtoken');
 
 
 router.get('/politics', function(req, res){
-    return new Promise((fulfill, reject) => {
-        pool.getConnection((err, connection) => {
-            if(err) reject(err);
-            else fulfill(connection);
+    let task_array = [
+      //1. connection 설정
+      function(callback){
+  			pool.getConnection(function(err, connection){
+  				if(err){
+            res.status(501).send({
+              msg : "Connection error"
+            });
+            callback("getConnecntion error at login: " + err, null);
+          }
+  				else callback(null, connection);
+  			});
+  		},
+      function(connection, callback){
+        let token = req.headers.token;
+        jwt.verify(token, req.app.get('jwt-secret'), function(err, decoded){
+          if(err){
+            res.status(501).send({
+              msg : "user authorization error"
+            });
+            connection.release();
+            callback("JWT decoded err : "+ err, null);
+          }
+          else callback(null, decoded.user_email, connection);
         });
-    })
-    .catch(err => {
-        res.status(500).send({ result: [], message: "get Connection err : " + err});
-    })
-    .then(connection => {
+      },
+      function(userEmail, connection, callback){
         var today = new Date();
         today = moment(today).format('YYYYMMDD');
-        let query = 'select news_id, news_title, news_image, news_date, news_contents from news where news_category = 1 and news_date = ? order by news_rank asc';
-        connection.query(query, today, (err, data) => {
+        let selectNewsQuery = 'select news_id, news_title, news_image, news_date, news_contents from news where news_category = 1 and news_date = ? order by news_rank asc';
+        connection.query(selectNewsQuery, today, function(err, newsData){
             if(err){
-                res.status(500).send({ result: [], message: "select query error :" + err});
+              res.status(501).send({
+                msg : "select politics current news error"
+              });
+              connection.release();
+              callback("selectNewsQueryerr : " + err, null);
             }
             else{
-                res.status(200).send({ result: data, message: "success"});
+                res.status(200).send({
+                    msg : "Success",
+                    data : newsData
+                });
+                connection.release();
+                callback("Successful find news data");
             }
-            connection.release();
         });
+      }
+    ];
+    async.waterfall(task_array, function(err, result) {
+      if (err){
+        err = moment().format('MM/DDahh:mm:ss//') + err;
+        console.log(err);
+      }
+      else{
+        result = moment().format('MM/DDahh:mm:ss//') + result;
+        console.log(result);
+      }
     });
 });
+
 
 router.get('/economies', function(req, res){
-    return new Promise((fulfill, reject) => {
-        pool.getConnection((err, connection) => {
-            if(err) reject(err);
-            else fulfill(connection);
+    let task_array = [
+      //1. connection 설정
+      function(callback){
+  			pool.getConnection(function(err, connection){
+  				if(err){
+            res.status(501).send({
+              msg : "Connection error"
+            });
+            callback("getConnecntion error at login: " + err, null);
+          }
+  				else callback(null, connection);
+  			});
+  		},
+      function(connection, callback){
+        let token = req.headers.token;
+        jwt.verify(token, req.app.get('jwt-secret'), function(err, decoded){
+          if(err){
+            res.status(501).send({
+              msg : "user authorization error"
+            });
+            connection.release();
+            callback("JWT decoded err : "+ err, null);
+          }
+          else callback(null, decoded.user_email, connection);
         });
-    })
-    .catch(err => {
-        res.status(500).send({ result: [], message: "get Connection err : " + err});
-    })
-    .then(connection => {
+      },
+      function(userEmail, connection, callback){
         var today = new Date();
         today = moment(today).format('YYYYMMDD');
-        let query = 'select news_id, news_title, news_image, news_date, news_contents from news where news_category = 2 and news_date = ? order by news_rank asc';
-        connection.query(query, today, (err, data) => {
+        let selectNewsQuery = 'select news_id, news_title, news_image, news_date, news_contents from news where news_category = 2 and news_date = ? order by news_rank asc';
+        connection.query(selectNewsQuery, today, function(err, newsData){
             if(err){
-                res.status(500).send({ result: [], message: "select query error :" + err});
+              res.status(501).send({
+                msg : "select economies current news error"
+              });
+              connection.release();
+              callback("selectNewsQueryerr : " + err, null);
             }
             else{
-                res.status(200).send({ result: data, message: "success"});
+                res.status(200).send({
+                    msg : "Success",
+                    data : newsData
+                });
+                connection.release();
+                callback("Successful find news data");
             }
-            connection.release();
         });
+      }
+    ];
+    async.waterfall(task_array, function(err, result) {
+      if (err){
+        err = moment().format('MM/DDahh:mm:ss//') + err;
+        console.log(err);
+      }
+      else{
+        result = moment().format('MM/DDahh:mm:ss//') + result;
+        console.log(result);
+      }
     });
 });
+
+
 
 router.get('/societies', function(req, res){
-    return new Promise((fulfill, reject) => {
-        pool.getConnection((err, connection) => {
-            if(err) reject(err);
-            else fulfill(connection);
+    let task_array = [
+      //1. connection 설정
+      function(callback){
+  			pool.getConnection(function(err, connection){
+  				if(err){
+            res.status(501).send({
+              msg : "Connection error"
+            });
+            callback("getConnecntion error at login: " + err, null);
+          }
+  				else callback(null, connection);
+  			});
+  		},
+      function(connection, callback){
+        let token = req.headers.token;
+        jwt.verify(token, req.app.get('jwt-secret'), function(err, decoded){
+          if(err){
+            res.status(501).send({
+              msg : "user authorization error"
+            });
+            connection.release();
+            callback("JWT decoded err : "+ err, null);
+          }
+          else callback(null, decoded.user_email, connection);
         });
-    })
-    .catch(err => {
-        res.status(500).send({ result: [], message: "get Connection err : " + err});
-    })
-    .then(connection => {
+      },
+      function(userEmail, connection, callback){
         var today = new Date();
         today = moment(today).format('YYYYMMDD');
-        let query = 'select news_id, news_title, news_image, news_date, news_contents from news where news_category = 3 and news_date = ? order by news_rank asc';
-        connection.query(query, today, (err, data) => {
+        let selectNewsQuery = 'select news_id, news_title, news_image, news_date, news_contents from news where news_category = 3 and news_date = ? order by news_rank asc';
+        connection.query(selectNewsQuery, today, function(err, newsData){
             if(err){
-                res.status(500).send({ result: [], message: "select query error :" + err});
+              res.status(501).send({
+                msg : "select societies current news error"
+              });
+              connection.release();
+              callback("selectNewsQueryerr : " + err, null);
             }
             else{
-                res.status(200).send({ result: data, message: "success"});
+                res.status(200).send({
+                    msg : "Success",
+                    data : newsData
+                });
+                connection.release();
+                callback("Successful find news data");
             }
-            connection.release();
         });
+      }
+    ];
+    async.waterfall(task_array, function(err, result) {
+      if (err){
+        err = moment().format('MM/DDahh:mm:ss//') + err;
+        console.log(err);
+      }
+      else{
+        result = moment().format('MM/DDahh:mm:ss//') + result;
+        console.log(result);
+      }
     });
 });
+
 
 router.get('/sciences', function(req, res){
-    return new Promise((fulfill, reject) => {
-        pool.getConnection((err, connection) => {
-            if(err) reject(err);
-            else fulfill(connection);
+    let task_array = [
+      //1. connection 설정
+      function(callback){
+  			pool.getConnection(function(err, connection){
+  				if(err){
+            res.status(501).send({
+              msg : "Connection error"
+            });
+            callback("getConnecntion error at login: " + err, null);
+          }
+  				else callback(null, connection);
+  			});
+  		},
+      function(connection, callback){
+        let token = req.headers.token;
+        jwt.verify(token, req.app.get('jwt-secret'), function(err, decoded){
+          if(err){
+            res.status(501).send({
+              msg : "user authorization error"
+            });
+            connection.release();
+            callback("JWT decoded err : "+ err, null);
+          }
+          else callback(null, decoded.user_email, connection);
         });
-    })
-    .catch(err => {
-        res.status(500).send({ result: [], message: "get Connection err : " + err});
-    })
-    .then(connection => {
+      },
+      function(userEmail, connection, callback){
         var today = new Date();
         today = moment(today).format('YYYYMMDD');
-        let query = 'select news_id, news_title, news_image, news_date, news_contents from news where news_category = 4 and news_date = ? order by news_rank asc';
-        connection.query(query, today, (err, data) => {
+        let selectNewsQuery = 'select news_id, news_title, news_image, news_date, news_contents from news where news_category = 4 and news_date = ? order by news_rank asc';
+        connection.query(selectNewsQuery, today, function(err, newsData){
             if(err){
-                res.status(500).send({ result: [], message: "select query error :" + err});
+              res.status(501).send({
+                msg : "select sciences current news error"
+              });
+              connection.release();
+              callback("selectNewsQueryerr : " + err, null);
             }
             else{
-                res.status(200).send({ result: data, message: "success"});
+                res.status(200).send({
+                    msg : "Success",
+                    data : newsData
+                });
+                connection.release();
+                callback("Successful find news data");
             }
-            connection.release();
         });
+      }
+    ];
+    async.waterfall(task_array, function(err, result) {
+      if (err){
+        err = moment().format('MM/DDahh:mm:ss//') + err;
+        console.log(err);
+      }
+      else{
+        result = moment().format('MM/DDahh:mm:ss//') + result;
+        console.log(result);
+      }
     });
 });
 
 
-router.get('/link/:news_id', function(req, res){
-    return new Promise((fulfill, reject) => {
-        pool.getConnection((err, connection) => {
-            if(err) reject(err);
-            else fulfill(connection);
-        });
-    })
-    .catch(err => {
-        res.status(500).send({ result: [], message: "get Connection err : " + err});
-    })
-    .then(connection => {
-        let query = 'select news_url from news where news_id = ?';
-        connection.query(query, req.params.news_id, (err,data)=>{
-            if(err){ res.status(500).send({ result: [], message: "select query err : " + err});}
-            else{
-                res.status(200).send({ result: data[0].news_url , message: "success"});
-            }
-            connection.release();
-        });
-    });
-});
 
 module.exports = router;

@@ -1,9 +1,7 @@
 const express = require('express');
-const aws = require('aws-sdk');
 const async = require('async');
 const router = express.Router();
 const moment = require('moment');
-aws.config.loadFromPath('./config/aws_config.json');
 const pool = require('../../config/db_pool');
 const jwt = require('jsonwebtoken');
 
@@ -16,10 +14,10 @@ router.get('/', function(req, res) {
             });
         })
         .catch(err => {
-            res.status(500).send({
-                result: [],
-                message: "get Connection err : " + err
+            res.status(501).send({
+                msg : "get Connection err : " + err
             });
+            console.log(moment().format('MM/DDahh:mm:ss//') + "get Connection error : "+err);
         })
         .then(connection => {
             return new Promise((fulfill, reject) => {
@@ -34,25 +32,30 @@ router.get('/', function(req, res) {
             });
         })
         .catch(([err, connection]) => {
-            res.status(500).send({
-                result: [],
-                message: "user authorization err" + err
+            res.status(501).send({
+                msg : "user authorization err" + err
             });
+            console.log(moment().format('MM/DDahh:mm:ss//') + "user authorization error : "+err);
         })
         .then(([user_email, connection]) => {
             let query = 'select users_week_time from users where users_email = ?';
             connection.query(query, user_email, (err, data) => {
-                if (err) res.status(500).send({
-                    result: [],
-                    message: 'select query error : ' + err
-                });
+                if (err){
+                    res.status(501).send({
+                        msg : 'select query error : ' + err
+                    });
+                    console.log(moment().format('MM/DDahh:mm:ss//') + "select query error : "+err);
+                }
                 else {
                     var weektime = JSON.parse(data[0].users_week_time);
                     res.status(200).send({
-                        email: user_email,
-                        weektime: weektime.weekTime,
-                        message: 'success'
+                        msg : 'Success',
+                        data : {
+                            email: user_email,
+                            weektime: weektime.weekTime
+                        }
                     });
+                    console.log(moment().format('MM/DDahh:mm:ss//') + "Successful get main page");
                 }
                 connection.release();
             });

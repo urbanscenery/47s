@@ -52,7 +52,7 @@ router.post('/', function(req, res) {
                     } else callback(null, email, req.body.name, connection);
                 });
             } else {
-                callback(null, userdata[0].user_email, userdata[0].user_nickname, connection);
+                callback(null, userdata[0].users_email, userdata[0].users_nickname, connection);
             }
         },
         function(userEmail, userNickName, connection, callback) {

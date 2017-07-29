@@ -1,9 +1,7 @@
 const express = require('express');
-const aws = require('aws-sdk');
 const async = require('async');
 const router = express.Router();
 const moment = require('moment');
-aws.config.loadFromPath('./config/aws_config.json');
 const pool = require('../../config/db_pool');
 const jwt = require('jsonwebtoken');
 
@@ -16,7 +14,8 @@ router.get('/alarm', function(req, res){
         });
     })
     .catch(err => {
-        res.status(500).send({ result: [], message: "get Connection err : " + err});
+        res.status(501).send({ msg : "get Connection err : " + err});
+        console.log(moment().format('MM/DDahh:mm:ss//') + "get Connection error : "+err);
     })
     .then(connection => {
       return new Promise((fulfill, reject) => {
@@ -31,19 +30,29 @@ router.get('/alarm', function(req, res){
       });
     })
     .catch(([err, connection])=>{
-      res.status(500).send({ result: [], message: "user authorization err" + err});
+      res.status(501).send({ msg : "user authorization err" + err});
+      console.log(moment().format('MM/DDahh:mm:ss//') + "user authorization error : "+err);
     })
     .then(([user_email, connection])=>{
       let query = 'select users_category from users where users_email = ?';
       connection.query(query, user_email, (err, data) => {
-        if(err) res.status(500).send({ result: [], message: 'select query error : ' + err});
+        if(err){
+            res.status(501).send({msg : 'select query error : ' + err});
+            console.log(moment().format('MM/DDahh:mm:ss//') + "select query error : "+err);
+        }
         else{
           var category = JSON.parse(data[0].users_category);
-          res.status(200).send({ category: category.category, message: 'success'});
+          res.status(200).send({
+               msg: 'Success',
+               data : {
+                   category: category.category
+               }
+           });
+           console.log(moment().format('MM/DDahh:mm:ss//') + "Successful find scheduling");
         }
         connection.release();
       });
-    })
+  });
 });
 
 module.exports = router;
