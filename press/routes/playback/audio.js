@@ -76,12 +76,12 @@ router.get('/', function(req, res) {
                 else if(category == 4) categoryVoice = "IT 과학";
                 let selectNewsQuery = 'select news_title from news where news_category = ? and news_date = ?';
                 connection.query(selectNewsQuery, [category, moment().format('YYYYMMDD')], function(err, newsData){
-                    let Voice = moment().format('YYYY/MM/DD') + "일. 오늘의 "+categoryVoice+" 분야 뉴스입니다. \n 첫번째 뉴스. \n";
+                    let Voice = moment().format('YYYY/MM/DD') + ". 오늘의 "+categoryVoice+" 분야 뉴스입니다. \n 첫번째 뉴스. \n";
                     let i = 0;
                     for(; i < newsData.length-2 ; i++){
-                        Voice += newsData[i].news_title + '\n 다음 뉴스. \n';
+                        Voice += newsData[i].news_title + '\n 다음입니다. \n';
                     }
-                    Voice += newsData[i].news_title + '\n 마지막 뉴스. \n' + newsData[i+1].news_title;
+                    Voice += newsData[i].news_title + '\n 마지막 뉴스 입니다. \n' + newsData[i+1].news_title;
                     callback(null, Voice, playtime, userEmail, connection);
                 });
             }
@@ -93,7 +93,6 @@ router.get('/', function(req, res) {
                     news : voice
                 }
             });
-            console.log(voice);
             let updatePlayTimeQuery = 'update users set users_playtime = ? where users_email = ?';
             connection.query(updatePlayTimeQuery, [playtime+1, userEmail], function(err){
                 if(err){

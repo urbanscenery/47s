@@ -14,8 +14,8 @@ router.put('/', function(req, res){
     function(callback){
 			pool.getConnection(function(err, connection){
 				if(err){
-          res.status(500).send({
-            msg : "500 Connection error"
+          res.status(501).send({
+            msg : "Connection error"
           });
           callback("getConnecntion error at login: " + err, null);
         }
@@ -28,7 +28,7 @@ router.put('/', function(req, res){
       jwt.verify(token, req.app.get('jwt-secret'), function(err, decoded){
         if(err){
           res.status(501).send({
-            msg : "501 user authorization error"
+            msg : "user authorization error"
           });
           connection.release();
           callback("JWT decoded err : "+ err, null);
@@ -37,8 +37,11 @@ router.put('/', function(req, res){
       });
     },
     function(userEmail, connection, callback){
+        let array = [Number(req.body.category1), Number(req.body.category2), Number(req.body.category3), Number(req.body.category4)];
+        console.log(array);
+        console.log(req.body);
       let categorySetJSON = {
-          category : req.body.category
+          category : array
       };
       let categorySet = JSON.stringify(categorySetJSON);
       let updateCategoryQuery = 'update users set users_category = ? where users_email = ?';
